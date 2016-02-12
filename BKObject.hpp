@@ -10,6 +10,7 @@
 #define BKObject_hpp
 #include "BKTransform.hpp"
 class BKObject{
+private:
 public:
     BKTransform *transform;
     BKObject()
