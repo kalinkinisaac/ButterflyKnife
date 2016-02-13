@@ -37,21 +37,41 @@ public:
 };
 class BKTransform{
 private:
-    void increment_child();
+    int id;
+    BKTransform *parent;//трансформ родителя
+    BKTransform *children;//массив дочерних обьектов трансформа
+    BKVector2d *position, *localPosition;//позиции: глобальная и локальная(относительно родителя)
+    BKVector2d forward; //направление "вперед" этого обьекта
+    BKRotation *rotation;//ротация
+    int layer; //уровень
+    int childCount = 0; //количество дочерних обьектов
+
 public:
-    BKTransform *parent;
-    BKTransform *children;
-    BKVector2d position, localPosition;
-    BKRotation rotation;
-    int Layer;
-    int childCount = 0;
+    
     BKTransform();
     BKTransform(BKVector2d pos, BKRotation rot, int lay);
-    void Rotate(BKVector2d rotation_to, Space space);
-    void Move(BKVector2d position_to, Space space);
-    void AddParent(BKTransform _parent);
-    void AddChild(BKTransform child);
-    void RemoveChild(int id);
+    //basics
+    BKVector2d getPosition();
+    void setPosition(BKVector2d pos);
+    BKRotation getRotation();
+    void setRotation(BKRotation rot);
+    
+    int getLayer();
+    void setLayer(int l);
+    
+    void Rotate(BKVector2d rotation_to, Space space);//повернуть трансформ в ротацию rotation_to
+    void Move(BKVector2d position_to, Space space);//передвинуть трансформ в точку position_to
+    
+    //parent section
+    /*Всегда пользуемся для создания дочерних обьектов только этими функциями.
+    //Например, чтобы сделать B дочерним к A, пишем B.SetParent(A)*/
+    void SetParent(BKTransform parent);
+    BKTransform GetParent();
+    void deleteParent();
+    
+    //don't use it
+    void RemoveChild(BKTransform *child);
+    void AddChild(BKTransform *child);
 };
 //}
 #endif /* BKTransform_hpp */

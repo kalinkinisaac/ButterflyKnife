@@ -42,50 +42,56 @@ BKRotation::BKRotation(double _x, double _y)
 }
 BKRotation::BKRotation(BKRotation &rotation)
 {
-    x = rotation.x;
-    y = rotation.y;
+    this->x = rotation.x;
+    this->y = rotation.y;
 }
 //==-Transform-============================
 BKTransform::BKTransform()    {
-    localPosition = *new BKVector2d;
-    position = *new BKVector2d;
-    rotation = *new BKRotation;
-    Layer = 0;
+    this->localPosition = new BKVector2d;
+    this->position = new BKVector2d;
+    this->rotation = new BKRotation;
+    this->layer = 0;
 }
-BKTransform::BKTransform(BKVector2d pos, BKRotation rot, int lay)
+BKTransform::BKTransform(BKVector2d position, BKRotation rotation, int layer)
 {
-    position = pos;
-    rotation = rot;
-    Layer = lay;
+    *this->position = position;
+    *this->rotation = rotation;
+    this->layer = layer;
 }
-
-void BKTransform::AddChild(BKTransform child){
+//don't work
+void BKTransform::AddChild(BKTransform *child){
     BKTransform *temp = new BKTransform[++childCount];
     for(int i = 0; i < childCount - 1; i++)
         temp[i] = children[i];
+    //temp[childCount - 1] = child;
     delete[] children;
     children = temp;
 }
-void BKTransform::RemoveChild(int id){
-    if((id < 0) || (id >= childCount) || (childCount <= 0))
-    {
-        //lol error
-    }
-    else
-    {
-        BKTransform *temp = new BKTransform[--childCount];
-        for(int i = 0; i < childCount - 1; i++)
-            temp[i] = children[i];
-        delete[] children;
-        children = temp;
+//mb don't work
+void BKTransform::RemoveChild(BKTransform *child){
+    int child_id;
+        for(int i = 0; i < childCount; i++)
+            if(&children[i] == child)
+                child_id = i;
+    BKTransform *ptr = children;
+        for(int i = child_id; i < --childCount; i++, ptr++)
+            ptr = ++ptr;
+    delete ptr;
 
-        childCount--;
-    }
 }
-void BKTransform::AddParent(BKTransform _parent)
+void BKTransform::SetParent(BKTransform parent)
 {
-    parent = &_parent;
-    position =  _parent.position + localPosition;
+    this->parent = &parent;
+    parent.AddChild(this);
+    //здесь должно быть изменение позиции с соответствием  трансформа родителя
+    //this->position =  parent.position + localPosition;
+}
+void BKTransform::deleteParent()
+{
+    parent->RemoveChild(this);
+    delete this->parent;
+    //без родителя localPosition - то же, что и position
+    this->position = localPosition;
 }
 
 
