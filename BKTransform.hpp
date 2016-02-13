@@ -13,7 +13,7 @@
 #include <cmath>
 #include <vector>
 enum Space {World, Local};
-namespace bk_tr {
+//namespace bk_tr {
 
 
 class BKVector2d{
@@ -22,11 +22,10 @@ public:
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
-    ~BKVector2d();
-
+BKVector2d operator + (BKVector2d b);
 };
     double Distanse(BKVector2d &a, BKVector2d &b);
-    BKVector2d operator + (BKVector2d b);
+
 class BKRotation : BKVector2d{
 public:
     double x, y;
@@ -40,7 +39,8 @@ class BKTransform{
 private:
     void increment_child();
 public:
-    BKTransform *parent; std::vector<BKTransform> children;
+    BKTransform *parent;
+    BKTransform *children;
     BKVector2d position, localPosition;
     BKRotation rotation;
     int Layer;
@@ -49,8 +49,9 @@ public:
     BKTransform(BKVector2d pos, BKRotation rot, int lay);
     void Rotate(BKVector2d rotation_to, Space space);
     void Move(BKVector2d position_to, Space space);
+    void AddParent(BKTransform _parent);
     void AddChild(BKTransform child);
     void RemoveChild(int id);
 };
-}
+//}
 #endif /* BKTransform_hpp */

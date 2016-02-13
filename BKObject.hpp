@@ -12,16 +12,16 @@
 class BKObject{
 private:
 public:
-    bk_tr::BKTransform *transform;
+    BKTransform *transform;
     BKObject()
     {
-        transform = new bk_tr::BKTransform;
+        transform = new BKTransform();
     }
     ~BKObject()
     {
         delete transform;
     }
-    void Translate(bk_tr::BKTransform transform_to, Space space);
+    //void Translate(BKTransform transform_to, Space space);
 
 };
 

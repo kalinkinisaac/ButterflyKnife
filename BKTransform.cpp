@@ -8,7 +8,7 @@
 
 #include "BKTransform.hpp"
 #include <vector>
-using namespace bk_tr;
+using namespace std;
 //==-Vector-===============================
 BKVector2d::BKVector2d()
 {
@@ -25,9 +25,10 @@ BKVector2d::BKVector2d(BKVector2d &vector)
     x = vector.x;
     y = vector.y;
 }
-BKVector2d operator + (BKVector2d &b){
-    
-}
+/*
+BKVector2d::BKVector2d operator + (BKVector2d b){
+    return *new BKVector2d;
+}*/
 //==-Rotation-=============================
 BKRotation::BKRotation()
 {
@@ -59,19 +60,32 @@ BKTransform::BKTransform(BKVector2d pos, BKRotation rot, int lay)
 }
 
 void BKTransform::AddChild(BKTransform child){
-    children.push_back(child);
-    childCount++;
+    BKTransform *temp = new BKTransform[++childCount];
+    for(int i = 0; i < childCount - 1; i++)
+        temp[i] = children[i];
+    delete[] children;
+    children = temp;
 }
 void BKTransform::RemoveChild(int id){
-    if(id < 0 || id >= childCount)
+    if((id < 0) || (id >= childCount) || (childCount <= 0))
     {
         //lol error
     }
     else
     {
-        children.erase(children.begin() + id);
+        BKTransform *temp = new BKTransform[--childCount];
+        for(int i = 0; i < childCount - 1; i++)
+            temp[i] = children[i];
+        delete[] children;
+        children = temp;
+
         childCount--;
     }
+}
+void BKTransform::AddParent(BKTransform _parent)
+{
+    parent = &_parent;
+    position =  _parent.position + localPosition;
 }
 
 
