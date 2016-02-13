@@ -11,35 +11,46 @@
 
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <vector>
 enum Space {World, Local};
+namespace bk_tr {
+
+
 class BKVector2d{
 public:
-    double *x, *y;
+    double x, y;
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
     ~BKVector2d();
-    double Distanse(BKVector2d &a, BKVector2d &b);
-    //BKVector2d operator = (BKVector2d b);
+
 };
+    double Distanse(BKVector2d &a, BKVector2d &b);
+    BKVector2d operator + (BKVector2d b);
 class BKRotation : BKVector2d{
 public:
-    BKRotation() : BKVector2d(){}
-    BKRotation(double _x, double _y):BKVector2d(_x, _y){}
+    double x, y;
+    BKRotation();
+    BKRotation(double _x, double _y);
     BKRotation(BKRotation &rotation);
     void SetLookRotation(BKVector2d target);
     int Angle(BKRotation &a, BKRotation &b);
 };
 class BKTransform{
+private:
+    void increment_child();
 public:
-    BKVector2d *position;
-    BKRotation *rotation;
+    BKTransform *parent; std::vector<BKTransform> children;
+    BKVector2d position, localPosition;
+    BKRotation rotation;
     int Layer;
+    int childCount = 0;
     BKTransform();
     BKTransform(BKVector2d pos, BKRotation rot, int lay);
-    ~BKTransform();
     void Rotate(BKVector2d rotation_to, Space space);
     void Move(BKVector2d position_to, Space space);
+    void AddChild(BKTransform child);
+    void RemoveChild(int id);
 };
-
+}
 #endif /* BKTransform_hpp */
