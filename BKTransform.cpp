@@ -11,21 +11,40 @@
 #include <cmath>
 using namespace std;
 //==-Vector-===============================
+
+double BKVector2d::x() {
+	return this->X;
+}
+
+double BKVector2d::y() {
+	return this->Y;
+}
+
+double BKVector2d::x(double _x) {
+	this->X = _x;
+	return this->X;
+}
+
+double BKVector2d::y(double _y) {
+	this->Y = _y;
+	return this->Y;
+}
+
 BKVector2d::BKVector2d()
 {
-    x = 0;
-    y = 0;
+    x(0); y(0);
 }
 BKVector2d::BKVector2d(double _x, double _y)
 {
-    x = _x;
-    y = _y;
+    x(_x);
+    y(_y);
 }
 BKVector2d::BKVector2d(BKVector2d &vector)
 {
-    x = vector.x;
-    y = vector.y;
+    x(vector.x());
+    y(vector.y());
 }
+
 /*
 BKVector2d::BKVector2d operator + (BKVector2d b){
     return *new BKVector2d;

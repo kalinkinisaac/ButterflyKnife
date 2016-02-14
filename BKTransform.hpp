@@ -15,14 +15,19 @@
 enum Space {World, Local};
 //namespace bk_tr {
 
-
 class BKVector2d{
+private:
+    double X, Y;
 public:
-    double x, y;
+    double x();
+    double y();
+    double x(double _x);
+    double y(double _y);
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
-BKVector2d operator + (BKVector2d b);
+    BKVector2d operator + (BKVector2d b);
+    BKVector2d operator = (BKVector2d b);
 };
     double Distanse(BKVector2d &a, BKVector2d &b);
 
