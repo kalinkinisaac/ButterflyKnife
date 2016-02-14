@@ -15,13 +15,14 @@ public:
     BKTransform *transform;
     BKObject()
     {
-        transform = new BKTransform;
+        transform = new BKTransform();
     }
     ~BKObject()
     {
         delete transform;
     }
-    void Translate(BKTransform transform_to, Space space);
+    //void Translate(BKTransform transform_to, Space space);
+
 };
 
 #endif /* BKObject_hpp */

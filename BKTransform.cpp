@@ -7,47 +7,91 @@
 //
 
 #include "BKTransform.hpp"
+#include <vector>
+using namespace std;
 //==-Vector-===============================
 BKVector2d::BKVector2d()
 {
-    *x = 0;
-    *y = 0;
+    x = 0;
+    y = 0;
 }
 BKVector2d::BKVector2d(double _x, double _y)
 {
-    *x = _x;
-    *y = _y;
+    x = _x;
+    y = _y;
 }
 BKVector2d::BKVector2d(BKVector2d &vector)
 {
-    *x = *vector.x;
-    *y = *vector.y;
+    x = vector.x;
+    y = vector.y;
 }
-BKVector2d::~BKVector2d()
-{
-    delete x;
-    delete y;
-}
+/*
+BKVector2d::BKVector2d operator + (BKVector2d b){
+    return *new BKVector2d;
+}*/
 //==-Rotation-=============================
+BKRotation::BKRotation()
+{
+    x = 0;
+    y = 0;
+}
+BKRotation::BKRotation(double _x, double _y)
+{
+    x = _x;
+    y = _y;
+}
 BKRotation::BKRotation(BKRotation &rotation)
 {
-    *x = *rotation.x;
-    *y = *rotation.y;
+    this->x = rotation.x;
+    this->y = rotation.y;
 }
 //==-Transform-============================
 BKTransform::BKTransform()    {
-    position = new BKVector2d;
-    rotation = new BKRotation;
-    Layer = 0;
+    this->localPosition = new BKVector2d;
+    this->position = new BKVector2d;
+    this->rotation = new BKRotation;
+    this->layer = 0;
 }
-BKTransform::BKTransform(BKVector2d pos, BKRotation rot, int lay)
+BKTransform::BKTransform(BKVector2d position, BKRotation rotation, int layer)
 {
-    *position = pos;
-    *rotation = rot;
-    Layer = lay;
+    *this->position = position;
+    *this->rotation = rotation;
+    this->layer = layer;
 }
-BKTransform::~BKTransform()
+//don't work
+void BKTransform::AddChild(BKTransform *child){
+    BKTransform *temp = new BKTransform[++childCount];
+    for(int i = 0; i < childCount - 1; i++)
+        temp[i] = children[i];
+    //temp[childCount - 1] = child;
+    delete[] children;
+    children = temp;
+}
+//mb don't work
+void BKTransform::RemoveChild(BKTransform *child){
+    int child_id;
+        for(int i = 0; i < childCount; i++)
+            if(&children[i] == child)
+                child_id = i;
+    BKTransform *ptr = children;
+        for(int i = child_id; i < --childCount; i++, ptr++)
+            ptr = ++ptr;
+    delete ptr;
+
+}
+void BKTransform::SetParent(BKTransform parent)
 {
-    delete position;
-    delete rotation;
+    this->parent = &parent;
+    parent.AddChild(this);
+    //здесь должно быть изменение позиции с соответствием  трансформа родителя
+    //this->position =  parent.position + localPosition;
 }
+void BKTransform::deleteParent()
+{
+    parent->RemoveChild(this);
+    delete this->parent;
+    //без родителя localPosition - то же, что и position
+    this->position = localPosition;
+}
+
+
