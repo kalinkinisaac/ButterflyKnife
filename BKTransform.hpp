@@ -27,13 +27,12 @@ public:
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
     BKVector2d operator + (BKVector2d b);
-    BKVector2d operator = (BKVector2d b);
 };
     double Distanse(BKVector2d &a, BKVector2d &b);
 
-class BKRotation : BKVector2d{
+class BKRotation {
+    BKVector2d BK_ROTATION_DIRECTION;
 public:
-    double x, y;
     BKRotation();
     BKRotation(double _x, double _y);
     BKRotation(BKRotation &rotation);
@@ -49,7 +48,7 @@ private:
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation *rotation;//ротация
     int layer; //уровень
-    int childCount = 0; //количество дочерних обьектов
+    int childCount; //количество дочерних обьектов
 
 public:
     
