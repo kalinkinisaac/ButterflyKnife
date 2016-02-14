@@ -9,7 +9,7 @@
 #ifndef BKTransform_hpp
 #define BKTransform_hpp
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.h>
 
 
 enum Space {World, Local};
