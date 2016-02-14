@@ -8,6 +8,7 @@
 
 #include "BKTransform.hpp"
 #include <vector>
+#include <cmath>
 using namespace std;
 //==-Vector-===============================
 BKVector2d::BKVector2d()

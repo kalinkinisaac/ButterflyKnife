@@ -10,8 +10,8 @@
 #define BKTransform_hpp
 
 #include <SFML/Graphics.hpp>
-#include <cmath>
-#include <vector>
+
+
 enum Space {World, Local};
 //namespace bk_tr {
 
