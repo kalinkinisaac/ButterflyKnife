@@ -7,3 +7,6 @@
 //
 
 #include "include/BKObject.hpp"
+BKObject::BKObject(){
+    transform = new BKTransform;
+}

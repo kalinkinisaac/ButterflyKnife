@@ -20,14 +20,12 @@ double BKVector2d::y() {
 	return this->Y;
 }
 
-double BKVector2d::x(double _x) {
-	this->X = _x;
-	return this->X;
+void BKVector2d::x(double _x) {
+    this->X = _x;
+ 
 }
-
-double BKVector2d::y(double _y) {
-	this->Y = _y;
-	return this->Y;
+void BKVector2d::y(double _y) {
+    this->Y = _y;
 }
 
 BKVector2d::BKVector2d()
@@ -52,29 +50,86 @@ BKVector2d::BKVector2d operator + (BKVector2d b){
 //==-Rotation-=============================
 BKRotation::BKRotation()
 {
-    this->BK_ROTATION_DIRECTION = *new BKVector2d();
+    this->direction = *new BKVector2d();
 }
 BKRotation::BKRotation(double _x, double _y)
 {
-    this->BK_ROTATION_DIRECTION = *new BKVector2d(_x, _y);
+    this->direction = *new BKVector2d(_x, _y);
 }
 BKRotation::BKRotation(BKRotation &rotation)
 {
-    this->BK_ROTATION_DIRECTION = *new BKVector2d(rotation.BK_ROTATION_DIRECTION);
+    this->direction = *new BKVector2d(rotation.direction);
 }
 //==-Transform-============================
 BKTransform::BKTransform()    {
-    this->localPosition = new BKVector2d;
-    this->position = new BKVector2d;
-    this->rotation = new BKRotation;
+    this->localPosition = *new BKVector2d;
+    this->position = *new BKVector2d;
+    this->rotation = *new BKRotation;
    
 }
 BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 {
-    *this->position = position;
-    *this->rotation = rotation;
+    setPosition(position);
+    setRotation(rotation);
 }
-//don't work
+
+void BKTransform::setPosition(BKVector2d position)
+{
+    this->position = position;
+    ChildReTransform();
+}
+void BKTransform::setRotation(BKRotation rotation)
+{
+    this->rotation = rotation;
+    ChildReTransform();
+}
+void BKTransform::Rotate(double angle, Space space)
+{
+    if(space == World)
+    {
+        //rotate
+    }
+    else
+    {
+        
+    }
+}
+void BKTransform::Move(BKVector2d position_to, Space space)
+{
+    if(space == World)
+    {
+        position += position_to;
+    }
+    else
+    {
+        localPosition += position_to;
+    }
+    //needs to operator overload
+
+}
+
+void BKTransform::ChildReTransform()
+{
+    BKTransform *ptr = *children;
+    for(int i = 0; i < childCount; i++, ptr++){
+        //jopa-math position update
+        double leng = sqrt(pow(this->rotation.direction.x(),2)
+                         + pow(this->rotation.direction.y(),2));
+        double sin1 = this->rotation.direction.x()/leng;
+        double cos1 = this->rotation.direction.y()/leng;
+        ptr->position.x(ptr->localPosition.x()*cos1
+                      + ptr->localPosition.y()*sin1);
+        ptr->position.y(-ptr->localPosition.x()*sin1
+                        + ptr->localPosition.y()*cos1);
+        //rotation update
+        ptr->rotation.direction.x(ptr->localRotation.direction.x()*cos1
+                        + ptr->localRotation.direction.y()*sin1);
+        ptr->rotation.direction.y(-ptr->localRotation.direction.x()*sin1
+                                  + ptr->localRotation.direction.y()*cos1);
+        //^^^^this code needs check^^^^^^
+        ptr = ++ptr;
+    }
+}
 void BKTransform::AddChild(BKTransform *child){
     BKTransform **temp = new BKTransform*[++this->childCount];
     for(int i = 0; i < childCount - 1; i++)
@@ -83,19 +138,17 @@ void BKTransform::AddChild(BKTransform *child){
     free(children);
     children = temp;
 }
-//mb don't work
-//
-//FIX IT
+
 void BKTransform::RemoveChild(BKTransform *child){
     int child_id;
         for(int i = 0; i < childCount; i++)
-            if(&children[i] == child)
+            if(children[i] == child)
                 child_id = i;
-    BKTransform *ptr = children;
-        for(int i = child_id; i < --childCount; i++, ptr++)
+    BKTransform *ptr = *children;
+        for(int i = child_id; i < childCount - 1; i++, ptr++)
             ptr = ++ptr;
     delete ptr;
-
+    //неплохо сыграно
 }
 
 
@@ -104,15 +157,15 @@ void BKTransform::SetParent(BKTransform parent)
 {
     this->parent = &parent;
     parent.AddChild(this);
-    //здесь должно быть изменение позиции с соответствием  трансформа родителя
-    //this->position =  parent.position + localPosition;
+    //jopa_math begin
+    int a;
 }
 void BKTransform::deleteParent()
 {
     parent->RemoveChild(this);
     delete this->parent;
     //без родителя localPosition - то же, что и position
-    this->position = localPosition;
+    this->position = this->localPosition;
 }
 
 

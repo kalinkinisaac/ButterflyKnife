@@ -13,14 +13,9 @@ class BKObject{
 private:
 public:
     BKTransform *transform;
-    BKObject()
-    {
-        transform = new BKTransform();
-    }
-    ~BKObject()
-    {
-        delete transform;
-    }
+    BKVector2d p;
+    BKObject();
+
     
     //void Translate(BKTransform transform_to, Space space);
 
