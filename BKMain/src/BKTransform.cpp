@@ -67,24 +67,25 @@ BKTransform::BKTransform()    {
     this->localPosition = new BKVector2d;
     this->position = new BKVector2d;
     this->rotation = new BKRotation;
-    this->layer = 0;
+   
 }
-BKTransform::BKTransform(BKVector2d position, BKRotation rotation, int layer)
+BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 {
     *this->position = position;
     *this->rotation = rotation;
-    this->layer = layer;
 }
 //don't work
 void BKTransform::AddChild(BKTransform *child){
-    BKTransform *temp = new BKTransform[++childCount];
+    BKTransform **temp = new BKTransform*[++this->childCount];
     for(int i = 0; i < childCount - 1; i++)
         temp[i] = children[i];
-    //temp[childCount - 1] = child;
-    delete[] children;
+    temp[childCount - 1] = child;
+    free(children);
     children = temp;
 }
 //mb don't work
+//
+//FIX IT
 void BKTransform::RemoveChild(BKTransform *child){
     int child_id;
         for(int i = 0; i < childCount; i++)
@@ -96,6 +97,9 @@ void BKTransform::RemoveChild(BKTransform *child){
     delete ptr;
 
 }
+
+
+
 void BKTransform::SetParent(BKTransform parent)
 {
     this->parent = &parent;

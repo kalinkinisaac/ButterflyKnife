@@ -43,11 +43,10 @@ class BKTransform{
 private:
     int id;
     BKTransform *parent;//трансформ родителя
-    BKTransform *children;//массив дочерних обьектов трансформа
+    BKTransform **children;//массив дочерних обьектов трансформа
     BKVector2d *position, *localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation *rotation;//ротация
-    int layer; //уровень
     int childCount; //количество дочерних обьектов
 
 public:
