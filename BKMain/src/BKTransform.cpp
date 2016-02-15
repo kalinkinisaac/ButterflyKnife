@@ -52,15 +52,15 @@ BKVector2d::BKVector2d operator + (BKVector2d b){
 //==-Rotation-=============================
 BKRotation::BKRotation()
 {
-    this->BK_ROTATION_DIRECTION = new BKVector2d();
+    this->BK_ROTATION_DIRECTION = *new BKVector2d();
 }
 BKRotation::BKRotation(double _x, double _y)
 {
-    this->BK_ROTATION_DIRECTION = new BKVector2d(_x, _y);
+    this->BK_ROTATION_DIRECTION = *new BKVector2d(_x, _y);
 }
 BKRotation::BKRotation(BKRotation &rotation)
 {
-    this->BK_ROTATION_DIRECTION = new BKVector2d(rotation.BK_ROTATION_DIRECTION);
+    this->BK_ROTATION_DIRECTION = *new BKVector2d(rotation.BK_ROTATION_DIRECTION);
 }
 //==-Transform-============================
 BKTransform::BKTransform()    {
