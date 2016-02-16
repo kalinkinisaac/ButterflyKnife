@@ -51,7 +51,8 @@ private:
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
     int childCount; //количество дочерних обьектов
-    void ChildReTransform();
+    //void ChildReTransform();
+    void UpdateGlobalCoordinates();
 public:
     
     BKTransform();
@@ -62,8 +63,6 @@ public:
     BKRotation getRotation();
     void setRotation(BKRotation rotation);
     
-    int getLayer();
-    void setLayer(int l);
     
     void Rotate(BKRotation deltaRotation, Space space);//повернуть НА ротацию
     void Rotate(double angle, Space space);//повернуть на angle радиан

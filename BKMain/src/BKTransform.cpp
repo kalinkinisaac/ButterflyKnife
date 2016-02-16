@@ -84,13 +84,13 @@ BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 
 void BKTransform::setPosition(BKVector2d position)
 {
-    this->position = position;
-    ChildReTransform();
+    this->localPosition = position;
+    this->UpdateGlobalCoordinates();
 }
 void BKTransform::setRotation(BKRotation rotation)
 {
-    this->rotation = rotation;
-    ChildReTransform();
+    this->localRotation = rotation;
+    this->UpdateGlobalCoordinates();
 }
 void BKTransform::Rotate(BKRotation deltaRotation, Space space)
 {
@@ -129,7 +129,16 @@ void BKTransform::Move(BKVector2d position_to, Space space)
 
 }
 
-void BKTransform::ChildReTransform()
+void BKTransform::UpdateGlobalCoordinates() {
+	if(parent == 0) {
+		this->position = this->localPosition;
+		this->rotation = this->localRotation;
+	}
+	else {
+
+	}
+}
+/*void BKTransform::ChildReTransform()
 {
     BKTransform *ptr = *children;
     for(int i = 0; i < childCount; i++, ptr++){
@@ -149,7 +158,7 @@ void BKTransform::ChildReTransform()
                                   + ptr->localRotation.direction.y()*cos1);
         //^^^^this code needs check^^^^^^
     }
-}
+}*/
 void BKTransform::AddChild(BKTransform *child){
     BKTransform **temp = new BKTransform*[++this->childCount];
     for(int i = 0; i < childCount - 1; i++)
