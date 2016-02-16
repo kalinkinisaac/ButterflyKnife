@@ -50,21 +50,30 @@ BKVector2d::BKVector2d operator + (BKVector2d b){
 //==-Rotation-=============================
 BKRotation::BKRotation()
 {
-    this->direction = *new BKVector2d();
+    this->direction = *new BKVector2d(0, 1);
 }
 BKRotation::BKRotation(double _x, double _y)
 {
-    this->direction = *new BKVector2d(_x, _y);
+    if((_x == 0)&&(_y == 0))
+        BKRotation(0, 1);
+    else
+        this->direction = *new BKVector2d(_x/sqrt(_x*_x+_y*_y),
+                                          _y/sqrt(_x*_x+_y*_y));
 }
 BKRotation::BKRotation(BKRotation &rotation)
 {
     this->direction = *new BKVector2d(rotation.direction);
 }
+BKRotation& BKRotation::operator+=(BKRotation& rotation)
+{
+    
+}
 //==-Transform-============================
 BKTransform::BKTransform()    {
-    this->localPosition = *new BKVector2d;
     this->position = *new BKVector2d;
+    this->localPosition = *new BKVector2d;
     this->rotation = *new BKRotation;
+    this->localRotation = *new BKRotation;
    
 }
 BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
@@ -83,6 +92,18 @@ void BKTransform::setRotation(BKRotation rotation)
     this->rotation = rotation;
     ChildReTransform();
 }
+void BKTransform::Rotate(BKRotation deltaRotation, Space space)
+{
+    if(space == World)
+    {
+        this->rotation += deltaRotation;
+    }
+    else
+    {
+        this->localRotation += deltaRotation;
+    }
+}
+
 void BKTransform::Rotate(double angle, Space space)
 {
     if(space == World)
@@ -127,7 +148,6 @@ void BKTransform::ChildReTransform()
         ptr->rotation.direction.y(-ptr->localRotation.direction.x()*sin1
                                   + ptr->localRotation.direction.y()*cos1);
         //^^^^this code needs check^^^^^^
-        ptr = ++ptr;
     }
 }
 void BKTransform::AddChild(BKTransform *child){
@@ -148,7 +168,6 @@ void BKTransform::RemoveChild(BKTransform *child){
         for(int i = child_id; i < childCount - 1; i++)
             ptr = ++ptr;
     delete ptr;
-    //неплохо сыграно
 }
 
 

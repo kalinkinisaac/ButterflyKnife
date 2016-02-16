@@ -29,14 +29,18 @@ public:
     double Distanse(BKVector2d &a, BKVector2d &b);
 
 class BKRotation {
-    
 public:
-    BKVector2d direction;
+    BKVector2d direction; //по идее единичный вектор
     BKRotation();
     BKRotation(double _x, double _y);
     BKRotation(BKRotation &rotation);
-    void SetLookRotation(BKVector2d target);
-    int Angle(BKRotation &a, BKRotation &b);
+    void Set(double x);
+    void Set(BKRotation rotation);
+    void SetFromToRotation(BKVector2d from, BKVector2d to);
+    void SetLookRotation(BKVector2d target);//ротация, смотрящая
+    double ToAngle();//angle betw OY and rotation
+    BKRotation operator + (BKRotation &rotation);
+    BKRotation& operator += (BKRotation &rotation);
 };
 class BKTransform{
 private:
@@ -61,6 +65,7 @@ public:
     int getLayer();
     void setLayer(int l);
     
+    void Rotate(BKRotation deltaRotation, Space space);//повернуть НА ротацию
     void Rotate(double angle, Space space);//повернуть на angle радиан
     void Move(BKVector2d position_to, Space space);//переместить на вектор
     
