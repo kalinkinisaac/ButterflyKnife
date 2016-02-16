@@ -145,7 +145,7 @@ void BKTransform::RemoveChild(BKTransform *child){
             if(children[i] == child)
                 child_id = i;
     BKTransform *ptr = *children;
-        for(int i = child_id; i < childCount - 1; i++, ptr++)
+        for(int i = child_id; i < childCount - 1; i++)
             ptr = ++ptr;
     delete ptr;
     //неплохо сыграно
@@ -160,6 +160,7 @@ void BKTransform::SetParent(BKTransform parent)
     //jopa_math begin
     int a;
 }
+
 void BKTransform::deleteParent()
 {
     parent->RemoveChild(this);
