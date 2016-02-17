@@ -161,11 +161,11 @@ void BKTransform::UpdateTransform()
         //ротация, направленна на нашу позицию (единичная, как всегда)
         BKRotation pos_direction = *new BKRotation(this->localPosition.GetUnitVector2d());
         //Берем, получаем направление, в котором будет находиться наш обьект
-        this->position = (parent->getRotation() + pos_direction).direction;
+        this->position = (parent->GetRotation() + pos_direction).direction;
         
         this->position *= this->localPosition.GetLength(); //Получаем полный вектор, домножая на длину
         
-        this->position += parent->position;//параллельный перенос
+        this->position = parent->position + this->localPosition;//параллельный перенос
         
         
         //Rotation update
