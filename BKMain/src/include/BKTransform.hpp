@@ -23,7 +23,6 @@ public:
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
-    BKVector2d& GetUnitVector2d();//Получить единичный вектор
     double GetLength();
     BKVector2d& operator + (BKVector2d& b);
     BKVector2d& operator += (BKVector2d& b);

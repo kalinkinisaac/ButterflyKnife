@@ -42,13 +42,7 @@ BKVector2d::BKVector2d(BKVector2d &vector)
     x(vector.x());
     y(vector.y());
 }
-BKVector2d& BKVector2d::GetUnitVector2d()
-{
-    double _x = x();
-    double _y = y();
-    return *new BKVector2d(this->x()/GetLength(),
-                           this->y()/GetLength());
-}
+
 double BKVector2d::GetLength()
 {
     return sqrt(pow(this->x(), 2) + pow(this->y(), 2));
@@ -70,7 +64,9 @@ BKRotation::BKRotation()
 }
 BKRotation::BKRotation(BKVector2d direction)
 {
-    this->direction = direction;
+    direction =  *new BKVector2d(direction.x()/direction.GetLength(),
+                           direction.y()/direction.GetLength());
+        this->direction = direction;
 }
 BKRotation::BKRotation(double _x, double _y)
 {
@@ -159,7 +155,7 @@ void BKTransform::UpdateTransform()
         //Position update
         
         //ротация, направленна на нашу позицию (единичная, как всегда)
-        BKRotation pos_direction = *new BKRotation(this->localPosition.GetUnitVector2d());
+        BKRotation pos_direction = *new BKRotation(this->localPosition);
         //Берем, получаем направление, в котором будет находиться наш обьект
         this->position = (parent->GetRotation() + pos_direction).direction;
         
