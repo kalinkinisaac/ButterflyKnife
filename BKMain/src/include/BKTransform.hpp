@@ -23,8 +23,12 @@ public:
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
-    BKVector2d operator + (BKVector2d b);
-    BKVector2d operator += (BKVector2d b);
+    BKVector2d& GetUnitVector2d();//Получить единичный вектор
+    double GetLength();
+    BKVector2d& operator + (BKVector2d& b);
+    BKVector2d& operator += (BKVector2d& b);
+    BKVector2d& operator * (double k);
+    BKVector2d& operator *= (double k);
 };
     double Distanse(BKVector2d &a, BKVector2d &b);
 
@@ -32,6 +36,7 @@ class BKRotation {
 public:
     BKVector2d direction; //по идее единичный вектор
     BKRotation();
+    BKRotation(BKVector2d direction);
     BKRotation(double _x, double _y);
     BKRotation(BKRotation &rotation);
     void Set(double x);
@@ -39,8 +44,9 @@ public:
     void SetFromToRotation(BKVector2d from, BKVector2d to);
     void SetLookRotation(BKVector2d target);//ротация, смотрящая
     double ToAngle();//angle betw OY and rotation
-    BKRotation operator + (BKRotation &rotation);
+    BKRotation& operator + (BKRotation &rotation);
     BKRotation& operator += (BKRotation &rotation);
+
 };
 class BKTransform{
 private:
@@ -51,22 +57,23 @@ private:
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
     int childCount; //количество дочерних обьектов
-    //void ChildReTransform();
-    void UpdateGlobalCoordinates();
+    void UpdateTransform();//wow wow, slowly plz
 public:
     
     BKTransform();
     BKTransform(BKVector2d pos, BKRotation rot);
     //basics
-    BKVector2d getPosition();
-    void setPosition(BKVector2d position);
-    BKRotation getRotation();
-    void setRotation(BKRotation rotation);
+    BKVector2d GetPosition();
+    BKVector2d GetLocalPosition();
+    void SetLocalPosition(BKVector2d localPosition);
+    BKRotation GetRotation();
+    BKRotation GetLocalRotation();
+    void SetLocalRotation(BKRotation localRotation);
     
     
-    void Rotate(BKRotation deltaRotation, Space space);//повернуть НА ротацию
-    void Rotate(double angle, Space space);//повернуть на angle радиан
-    void Move(BKVector2d position_to, Space space);//переместить на вектор
+    void Rotate(BKRotation deltaRotation);//повернуть НА ротацию
+    void Rotate(double angle);//повернуть на angle радиан
+    void Move(BKVector2d position_to);//переместить на вектор
     
     //parent section
     /*Всегда пользуемся для создания дочерних обьектов только этими функциями.

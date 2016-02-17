@@ -42,15 +42,35 @@ BKVector2d::BKVector2d(BKVector2d &vector)
     x(vector.x());
     y(vector.y());
 }
+BKVector2d& BKVector2d::GetUnitVector2d()
+{
+    double _x = x();
+    double _y = y();
+    return *new BKVector2d(this->x()/GetLength(),
+                           this->y()/GetLength());
+}
+double BKVector2d::GetLength()
+{
+    return sqrt(pow(this->x(), 2) + pow(this->y(), 2));
+}
 
-/*
-BKVector2d::BKVector2d operator + (BKVector2d b){
-    return *new BKVector2d;
-}*/
+BKVector2d& BKVector2d::operator + (BKVector2d& b){
+    //return *new BKVector2d;
+}
+BKVector2d& BKVector2d::operator += (BKVector2d& b){
+}
+BKVector2d& BKVector2d::operator * (double k){
+}
+BKVector2d& BKVector2d::operator *= (double k){
+}
 //==-Rotation-=============================
 BKRotation::BKRotation()
 {
     this->direction = *new BKVector2d(0, 1);
+}
+BKRotation::BKRotation(BKVector2d direction)
+{
+    this->direction = direction;
 }
 BKRotation::BKRotation(double _x, double _y)
 {
@@ -64,10 +84,15 @@ BKRotation::BKRotation(BKRotation &rotation)
 {
     this->direction = *new BKVector2d(rotation.direction);
 }
+BKRotation& BKRotation::operator+(BKRotation& rotation)
+{
+    
+}
 BKRotation& BKRotation::operator+=(BKRotation& rotation)
 {
     
 }
+
 //==-Transform-============================
 BKTransform::BKTransform()    {
     this->position = *new BKVector2d;
@@ -78,87 +103,83 @@ BKTransform::BKTransform()    {
 }
 BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 {
-    setPosition(position);
-    setRotation(rotation);
+    SetLocalPosition(position);
+    SetLocalRotation(rotation);
 }
-
-void BKTransform::setPosition(BKVector2d position)
+BKVector2d BKTransform::GetPosition()
+{
+    return this->position;
+}
+BKVector2d BKTransform::GetLocalPosition()
+{
+    return this->localPosition;
+}
+BKRotation BKTransform::GetRotation()
+{
+    return this->rotation;
+}
+BKRotation BKTransform::GetLocalRotation()
+{
+    return this->localRotation;
+}
+void BKTransform::SetLocalPosition(BKVector2d localPosition)
 {
     this->localPosition = position;
-    this->UpdateGlobalCoordinates();
+    this->UpdateTransform();
 }
-void BKTransform::setRotation(BKRotation rotation)
+void BKTransform::SetLocalRotation(BKRotation localRotation)
 {
     this->localRotation = rotation;
-    this->UpdateGlobalCoordinates();
+    this->UpdateTransform();
 }
-void BKTransform::Rotate(BKRotation deltaRotation, Space space)
+void BKTransform::Rotate(BKRotation deltaRotation)
 {
-    if(space == World)
-    {
-        this->rotation += deltaRotation;
-    }
-    else
-    {
-        this->localRotation += deltaRotation;
-    }
+    this->localRotation += deltaRotation;
 }
 
-void BKTransform::Rotate(double angle, Space space)
+void BKTransform::Rotate(double angle)
 {
-    if(space == World)
-    {
-        //rotate
-    }
-    else
-    {
-        
-    }
+
 }
-void BKTransform::Move(BKVector2d position_to, Space space)
+void BKTransform::Move(BKVector2d position_to)
 {
-    if(space == World)
-    {
-        position += position_to;
-    }
-    else
-    {
-        localPosition += position_to;
-    }
+
+    localPosition += position_to;
     //needs to operator overload
-
 }
 
-void BKTransform::UpdateGlobalCoordinates() {
-	if(parent == 0) {
+void BKTransform::UpdateTransform()
+{
+	if(parent == 0) {//а так можно?
 		this->position = this->localPosition;
 		this->rotation = this->localRotation;
 	}
-	else {
-
+	else
+    {
+        //Position update
+        
+        //ротация, направленна на нашу позицию (единичная, как всегда)
+        BKRotation pos_direction = *new BKRotation(this->localPosition.GetUnitVector2d());
+        //Берем, получаем направление, в котором будет находиться наш обьект
+        this->position = (parent->getRotation() + pos_direction).direction;
+        
+        this->position *= this->localPosition.GetLength(); //Получаем полный вектор, домножая на длину
+        
+        this->position += parent->position;//параллельный перенос
+        
+        
+        //Rotation update
+        
+        this->rotation = parent->rotation + this->localRotation;
+        
+        /* Как я и говорил, BKVector и BKRotation совершенно разные вещи:
+           на данном этапе operator + у BKVector2d и BKRotation разные 
+           (у BKVector это просто сложение соответствующих координат, а
+            у BKRotation вычисляется по формуле) 
+         PS. Осталось написать все operators, я еще хз как, но формулы есть*/
 	}
 }
-/*void BKTransform::ChildReTransform()
-{
-    BKTransform *ptr = *children;
-    for(int i = 0; i < childCount; i++, ptr++){
-        //jopa-math position update
-        double leng = sqrt(pow(this->rotation.direction.x(),2)
-                         + pow(this->rotation.direction.y(),2));
-        double sin1 = this->rotation.direction.x()/leng;
-        double cos1 = this->rotation.direction.y()/leng;
-        ptr->position.x(ptr->localPosition.x()*cos1
-                      + ptr->localPosition.y()*sin1);
-        ptr->position.y(-ptr->localPosition.x()*sin1
-                        + ptr->localPosition.y()*cos1);
-        //rotation update
-        ptr->rotation.direction.x(ptr->localRotation.direction.x()*cos1
-                        + ptr->localRotation.direction.y()*sin1);
-        ptr->rotation.direction.y(-ptr->localRotation.direction.x()*sin1
-                                  + ptr->localRotation.direction.y()*cos1);
-        //^^^^this code needs check^^^^^^
-    }
-}*/
+
 void BKTransform::AddChild(BKTransform *child){
     BKTransform **temp = new BKTransform*[++this->childCount];
     for(int i = 0; i < childCount - 1; i++)
@@ -185,8 +206,6 @@ void BKTransform::SetParent(BKTransform parent)
 {
     this->parent = &parent;
     parent.AddChild(this);
-    //jopa_math begin
-    int a;
 }
 
 void BKTransform::deleteParent()
