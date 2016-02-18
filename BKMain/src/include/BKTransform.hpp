@@ -9,7 +9,8 @@
 #ifndef BKTransform_hpp
 #define BKTransform_hpp
 
-#include <SFML/Graphics.hpp>
+#include <vector>
+
 enum Space {World, Local};
 //namespace bk_tr {
 class BKVector2d{
@@ -51,7 +52,7 @@ class BKTransform{
 private:
     int id;
     BKTransform *parent;//трансформ родителя
-    BKTransform **children;//массив дочерних обьектов трансформа
+    std::vector<BKTransform*> children;//массив дочерних обьектов трансформа
     BKVector2d position, localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация

@@ -177,24 +177,14 @@ void BKTransform::UpdateTransform()
 }
 
 void BKTransform::AddChild(BKTransform *child){
-    BKTransform **temp = new BKTransform*[++this->childCount];
-    for(int i = 0; i < childCount - 1; i++)
-        temp[i] = children[i];
-    temp[childCount - 1] = child;
-    free(children);
-    children = temp;
+	this->children.push_back(child);
 }
 
 void BKTransform::RemoveChild(BKTransform *child){
-    int child_id;
-        for(int i = 0; i < childCount; i++)
-            if(children[i] == child)
-                child_id = i;
-    BKTransform *ptr = *children;
-        for(int i = child_id; i < childCount - 1; i++)
-            ptr = ++ptr;
-    delete ptr;
+	for(unsigned long i = 0; i < this->children.size(); ++i) 
+		if(children[i] == child) this->children.erase(this->children.begin()+i);
 }
+
 
 
 
