@@ -65,10 +65,10 @@ public:
     //basics
     BKVector2d GetPosition();
     BKVector2d GetLocalPosition();
-    void SetLocalPosition(BKVector2d localPosition);
+    void SetLocalPosition(BKVector2d _localPosition);
     BKRotation GetRotation();
     BKRotation GetLocalRotation();
-    void SetLocalRotation(BKRotation localRotation);
+    void SetLocalRotation(BKRotation _localRotation);
     
     
     void Rotate(BKRotation deltaRotation);//повернуть НА ротацию

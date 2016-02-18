@@ -118,14 +118,14 @@ BKRotation BKTransform::GetLocalRotation()
 {
     return this->localRotation;
 }
-void BKTransform::SetLocalPosition(BKVector2d localPosition)
+void BKTransform::SetLocalPosition(BKVector2d _localPosition)
 {
-    this->localPosition = position;
+    this->localPosition = _localPosition;
     this->UpdateTransform();
 }
-void BKTransform::SetLocalRotation(BKRotation localRotation)
+void BKTransform::SetLocalRotation(BKRotation _localRotation)
 {
-    this->localRotation = rotation;
+    this->localRotation = _localRotation;
     this->UpdateTransform();
 }
 void BKTransform::Rotate(BKRotation deltaRotation)
