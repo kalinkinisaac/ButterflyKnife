@@ -25,11 +25,13 @@ public:
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
     double GetLength();
-    BKVector2d& operator + (BKVector2d& b);
-    BKVector2d& operator += (BKVector2d& b);
-    BKVector2d& operator * (double k);
-    BKVector2d& operator *= (double k);
+    
+    BKVector2d& operator += (BKVector2d rhs);
+    BKVector2d& operator *= (double rhs);
 };
+    BKVector2d& operator + (BKVector2d lhs, BKVector2d rhs);
+    BKVector2d& operator * (BKVector2d lhs, double rhs);
+    BKVector2d& operator * (double lhs, BKVector2d rhs);
     double Distanse(BKVector2d &a, BKVector2d &b);
 
 class BKRotation {

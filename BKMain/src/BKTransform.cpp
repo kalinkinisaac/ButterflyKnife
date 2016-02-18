@@ -47,15 +47,25 @@ double BKVector2d::GetLength()
 {
     return sqrt(pow(this->x(), 2) + pow(this->y(), 2));
 }
-
-BKVector2d& BKVector2d::operator + (BKVector2d& b){
-    //return *new BKVector2d;
+//Operators section
+BKVector2d& operator + (BKVector2d lhs, BKVector2d rhs){
+    return *new BKVector2d(lhs.x() + rhs.x(), lhs.y() + rhs.y());
 }
-BKVector2d& BKVector2d::operator += (BKVector2d& b){
+BKVector2d& BKVector2d::operator += (BKVector2d rhs){
+    this->x(this->x() + rhs.x());
+    this->y(this->y() + rhs.y());
+    return *this;
 }
-BKVector2d& BKVector2d::operator * (double k){
+BKVector2d& operator * (BKVector2d lhs, double rhs){
+    return *new BKVector2d(lhs.x() * rhs, lhs.y() * rhs);
 }
-BKVector2d& BKVector2d::operator *= (double k){
+BKVector2d& operator * (double lhs, BKVector2d rhs){
+    return (rhs * lhs);
+}
+BKVector2d& BKVector2d::operator *= (double rhs){
+    this->x(this->x()*rhs);
+    this->y(this->y()*rhs);
+    return *this;
 }
 //==-Rotation-=============================
 BKRotation::BKRotation()
