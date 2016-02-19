@@ -1,3 +1,4 @@
+//
 //  BKTransform.hpp
 //  ButterflyKnife
 //
@@ -12,23 +13,25 @@
 
 enum Space {World, Local};
 //namespace bk_tr {
-class BKVector2d{
+class BKVector2d {
 private:
     double X, Y;
 public:
     double x();
     double y();
-    void x(double _x);
-    void y(double _y);
+    double y(double _y);
+    double x(double _x);
     BKVector2d();
     BKVector2d(double _x, double _y);
     BKVector2d(BKVector2d &vector);
     double GetLength();
-    
+    BKVector2d* Set(double _x, double _y);
     BKVector2d& operator += (BKVector2d rhs);
     BKVector2d& operator *= (double rhs);
+    BKVector2d& operator = (BKVector2d rhs);
 };
     BKVector2d& operator + (BKVector2d lhs, BKVector2d rhs);
+    bool operator == (BKVector2d lhs, BKVector2d rhs);
     BKVector2d& operator * (BKVector2d lhs, double rhs);
     BKVector2d& operator * (double lhs, BKVector2d rhs);
     double Distanse(BKVector2d &a, BKVector2d &b);

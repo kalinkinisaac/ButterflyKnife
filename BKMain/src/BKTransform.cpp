@@ -20,28 +20,32 @@ double BKVector2d::y() {
 	return this->Y;
 }
 
-void BKVector2d::x(double _x) {
+double BKVector2d::x(double _x) {
     this->X = _x;
- 
+    return this->X;
 }
-void BKVector2d::y(double _y) {
+double BKVector2d::y(double _y) {
     this->Y = _y;
+    return this->Y;
 }
 
 BKVector2d::BKVector2d()
 {
     x(0); y(0);
 }
-BKVector2d::BKVector2d(double _x, double _y)
-{
+BKVector2d::BKVector2d(double _x, double _y) {
+	Set(_x, _y);
+}
+BKVector2d::BKVector2d(BKVector2d &vector) {
+	*this = vector;
+}
+
+BKVector2d* BKVector2d::Set(double _x, double _y) {
     x(_x);
     y(_y);
+    return this;
 }
-BKVector2d::BKVector2d(BKVector2d &vector)
-{
-    x(vector.x());
-    y(vector.y());
-}
+
 
 double BKVector2d::GetLength()
 {
@@ -56,16 +60,29 @@ BKVector2d& BKVector2d::operator += (BKVector2d rhs){
     this->y(this->y() + rhs.y());
     return *this;
 }
+
 BKVector2d& operator * (BKVector2d lhs, double rhs){
     return *new BKVector2d(lhs.x() * rhs, lhs.y() * rhs);
 }
+
 BKVector2d& operator * (double lhs, BKVector2d rhs){
     return (rhs * lhs);
 }
+
 BKVector2d& BKVector2d::operator *= (double rhs){
     this->x(this->x()*rhs);
     this->y(this->y()*rhs);
     return *this;
+}
+
+BKVector2d& BKVector2d::operator= (BKVector2d rhs) {
+    x(rhs.x());
+    y(rhs.y());
+    return *this;
+}
+
+bool operator==(BKVector2d lhs, BKVector2d rhs) {
+	return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()); 
 }
 //==-Rotation-=============================
 BKRotation::BKRotation()
@@ -100,12 +117,9 @@ BKRotation& BKRotation::operator+=(BKRotation& rotation)
 }
 
 //==-Transform-============================
-BKTransform::BKTransform()    {
-    this->position = *new BKVector2d;
-    this->localPosition = *new BKVector2d;
-    this->rotation = *new BKRotation;
-    this->localRotation = *new BKRotation;
-   
+BKTransform::BKTransform()  {	
+    this->childCount = 0;
+
 }
 BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 {
@@ -188,6 +202,7 @@ void BKTransform::UpdateTransform()
 
 void BKTransform::AddChild(BKTransform *child){
 	this->children.push_back(child);
+	++this->childCount;
 }
 
 void BKTransform::RemoveChild(BKTransform *child){
