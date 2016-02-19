@@ -8,5 +8,12 @@
 
 #include "include/BKObject.hpp"
 BKObject::BKObject(){
-    transform = new BKTransform;
+	this->Transform = *new BKTransform;
 }
+
+BKObject::BKObject(BKTransform _Transform) {
+	this->Transform = _Transform;
+}
+
+
+

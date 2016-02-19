@@ -12,13 +12,9 @@
 class BKObject{
 private:
 public:
-    BKTransform *transform;
-    BKVector2d p;
+    BKTransform Transform;
     BKObject();
-
-    
-    //void Translate(BKTransform transform_to, Space space);
-
+    BKObject(BKTransform _Transform);
 };
 
 #endif /* BKObject_hpp */
