@@ -36,7 +36,7 @@ BKVector2d::BKVector2d()
 BKVector2d::BKVector2d(double _x, double _y) {
 	Set(_x, _y);
 }
-BKVector2d::BKVector2d(BKVector2d &vector) {
+BKVector2d::BKVector2d(const BKVector2d &vector) {
 	*this = vector;
 }
 
