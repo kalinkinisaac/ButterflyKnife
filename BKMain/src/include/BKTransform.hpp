@@ -42,16 +42,17 @@ public:
     BKRotation();
     BKRotation(BKVector2d direction);
     BKRotation(double _x, double _y);
-    BKRotation(BKRotation &rotation);
+    BKRotation(const BKRotation &rotation);
     void Set(double x);
     void Set(BKRotation rotation);
     void SetFromToRotation(BKVector2d from, BKVector2d to);
     void SetLookRotation(BKVector2d target);//ротация, смотрящая
     double ToAngle();//angle betw OY and rotation
-    BKRotation& operator + (BKRotation &rotation);
-    BKRotation& operator += (BKRotation &rotation);
+    //BKRotation& operator = (BKRotation rhs);
+    BKRotation& operator += (BKRotation &rhs);
 
 };
+    BKRotation& operator + (BKRotation &lhs, BKRotation &rhs);
 class BKTransform{
 private:
     int id;
@@ -67,11 +68,11 @@ public:
     BKTransform();
     BKTransform(BKVector2d pos, BKRotation rot);
     //basics
-    BKVector2d GetPosition();
-    BKVector2d GetLocalPosition();
+    BKVector2d& GetPosition();
+    BKVector2d& GetLocalPosition();
     void SetLocalPosition(BKVector2d _localPosition);
-    BKRotation GetRotation();
-    BKRotation GetLocalRotation();
+    BKRotation& GetRotation();
+    BKRotation& GetLocalRotation();
     void SetLocalRotation(BKRotation _localRotation);
     
     

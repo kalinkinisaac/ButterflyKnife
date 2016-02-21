@@ -70,8 +70,9 @@ BKVector2d& operator * (double lhs, BKVector2d rhs){
 }
 
 BKVector2d& BKVector2d::operator *= (double rhs){
-    this->x(this->x()*rhs);
-    this->y(this->y()*rhs);
+    //this->x(this->x()*rhs);
+    //this->y(this->y()*rhs);
+    *this = *new BKVector2d(*this * rhs);
     return *this;
 }
 
@@ -103,17 +104,23 @@ BKRotation::BKRotation(double _x, double _y)
         this->direction = *new BKVector2d(_x/sqrt(_x*_x+_y*_y),
                                           _y/sqrt(_x*_x+_y*_y));
 }
-BKRotation::BKRotation(BKRotation &rotation)
+BKRotation::BKRotation(const BKRotation &rotation)
 {
-    this->direction = *new BKVector2d(rotation.direction);
+    *this = rotation;
 }
-BKRotation& BKRotation::operator+(BKRotation& rotation)
+BKRotation& operator+(BKRotation &lhs, BKRotation &rhs)
 {
-    
+    /*
+     X = x1*y2 + y1*x2
+     Y = y1*y2 - x1*x2
+     */
+    return *new BKRotation(lhs.direction.x()*rhs.direction.y() + lhs.direction.y()*rhs.direction.x(),
+                           lhs.direction.y()*rhs.direction.y() - lhs.direction.x()*rhs.direction.x());
 }
-BKRotation& BKRotation::operator+=(BKRotation& rotation)
+BKRotation& BKRotation::operator+=(BKRotation& rhs)
 {
-    
+    *this = *new BKRotation(*this + rhs);
+    return *this;
 }
 
 //==-Transform-============================
@@ -126,19 +133,19 @@ BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
     SetLocalPosition(position);
     SetLocalRotation(rotation);
 }
-BKVector2d BKTransform::GetPosition()
+BKVector2d& BKTransform::GetPosition()
 {
     return this->position;
 }
-BKVector2d BKTransform::GetLocalPosition()
+BKVector2d& BKTransform::GetLocalPosition()
 {
     return this->localPosition;
 }
-BKRotation BKTransform::GetRotation()
+BKRotation& BKTransform::GetRotation()
 {
     return this->rotation;
 }
-BKRotation BKTransform::GetLocalRotation()
+BKRotation& BKTransform::GetLocalRotation()
 {
     return this->localRotation;
 }
