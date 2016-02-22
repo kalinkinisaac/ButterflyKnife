@@ -89,6 +89,8 @@ public:
     
     //don't use it
     void RemoveChild(BKTransform *child);
+    void DetachChildren(); //delete all children
+    BKTransform& GetChild(int index);
     void AddChild(BKTransform *child);
 };
 //}

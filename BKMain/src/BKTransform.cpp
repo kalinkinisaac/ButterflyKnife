@@ -209,12 +209,32 @@ void BKTransform::UpdateTransform()
 
 void BKTransform::AddChild(BKTransform *child){
 	this->children.push_back(child);
-	++this->childCount;
+    this->childCount++;
 }
-
+BKTransform& BKTransform::GetChild(int index)
+{
+    if((index >= 0) && (index < this->childCount))
+       return *this->children[index];
+    else
+       return *new BKTransform;// error
+}
+void BKTransform::DetachChildren()
+{
+    while(this->childCount >= 0)
+    {
+        GetChild(0).deleteParent();
+        this->children.erase(this->children.begin());
+        this->childCount--;
+    }
+}
 void BKTransform::RemoveChild(BKTransform *child){
-	for(unsigned long i = 0; i < this->children.size(); ++i) 
-		if(children[i] == child) this->children.erase(this->children.begin()+i);
+	for(unsigned long i = 0; i < this->childCount; ++i)
+        if(children[i] == child)
+        {
+            this->children.erase(this->children.begin()+i);
+            this->childCount--;
+        }
+
 }
 
 
