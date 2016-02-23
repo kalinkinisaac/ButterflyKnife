@@ -7,13 +7,9 @@
 //
 
 #include "include/BKObject.hpp"
-BKObject::BKObject(){
-	this->Transform = *new BKTransform;
-}
+BKObject::BKObject() : Transform() {}
 
-BKObject::BKObject(BKTransform _Transform) {
-	this->Transform = _Transform;
-}
+BKObject::BKObject(BKTransform _Transform) : Transform(_Transform) {}
 
 
 
