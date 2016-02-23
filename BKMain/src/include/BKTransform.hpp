@@ -61,7 +61,6 @@ private:
     BKVector2d position, localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
-    int childCount; //количество дочерних обьектов
     void UpdateTransform();//wow wow, slowly plz
 public:
     
@@ -84,13 +83,13 @@ public:
     /*Всегда пользуемся для создания дочерних обьектов только этими функциями.
     //Например, чтобы сделать B дочерним к A, пишем B.SetParent(A)*/
     void SetParent(BKTransform parent);
-    BKTransform GetParent();
+    BKTransform *GetParent();
     void deleteParent();
     
     //don't use it
     void RemoveChild(BKTransform *child);
     void DetachChildren(); //delete all children
-    BKTransform& GetChild(int index);
+    BKTransform *GetChild(unsigned long index);
     void AddChild(BKTransform *child);
 };
 //}
