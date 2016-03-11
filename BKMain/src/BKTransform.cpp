@@ -107,6 +107,12 @@ BKRotation::BKRotation(double _x, double _y)
         this->direction = *new BKVector2d(_x/sqrt(_x*_x+_y*_y),
                                           _y/sqrt(_x*_x+_y*_y));
 }
+BKRotation::BKRotation(double angle)
+{
+    this->direction.x(angle*sin(angle));
+    this->direction.y(angle*cos(angle));
+}
+
 BKRotation::BKRotation(const BKRotation &rotation)
 {
     *this = rotation;
@@ -175,7 +181,7 @@ void BKTransform::Rotate(BKRotation deltaRotation)
 
 void BKTransform::Rotate(double angle)
 {
-
+    this->localRotation += *new BKRotation(angle);
 }
 void BKTransform::Move(BKVector2d position_to)
 {
@@ -192,22 +198,22 @@ void BKTransform::UpdateTransform()
 	}
 	else
     {
+        
         //Position update
         
         //ротация, направленна на нашу позицию (единичная, как всегда)
         BKRotation pos_direction = *new BKRotation(this->localPosition);
         //Берем, получаем направление, в котором будет находиться наш обьект
-        this->position = (parent->GetRotation() + pos_direction).direction;
+        this->position = (parent->GetRotation() + pos_direction).direction*this->localPosition.GetLength();
         
-        this->position *= this->localPosition.GetLength(); //Получаем полный вектор, домножая на длину
+        //this->localPosition *= this->localPosition.GetLength(); //Получаем полный вектор, домножая на длину
         
-        this->position = parent->position + this->localPosition;//параллельный перенос
+        this->position += parent->GetPosition();// + this->localPosition;//параллельный перенос
         
         
         //Rotation update
         
-        this->rotation = parent->rotation + this->localRotation;
-        
+        this->rotation = parent->GetRotation() + this->localRotation;
         /* Как я и говорил, BKVector и BKRotation совершенно разные вещи:
            на данном этапе operator + у BKVector2d и BKRotation разные 
            (у BKVector это просто сложение соответствующих координат, а
@@ -247,10 +253,10 @@ void BKTransform::RemoveChild(BKTransform *child){
 
 
 
-void BKTransform::SetParent(BKTransform parent)
+void BKTransform::SetParent(BKTransform* parent)
 {
-    this->parent = &parent;
-    parent.AddChild(this);
+    this->parent = parent;
+    (*parent).AddChild(this);
 }
 
 void BKTransform::deleteParent()

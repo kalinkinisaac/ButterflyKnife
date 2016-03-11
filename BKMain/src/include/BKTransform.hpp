@@ -42,6 +42,7 @@ public:
     BKRotation();
     BKRotation(BKVector2d direction);
     BKRotation(double _x, double _y);
+    BKRotation(double angle);
     BKRotation(const BKRotation &rotation);
     void Set(double x);
     void Set(BKRotation rotation);
@@ -56,13 +57,14 @@ public:
 class BKTransform{
 private:
     int id;
-    BKTransform *parent;//трансформ родителя
+    //BKTransform *parent;//трансформ родителя
     std::vector<BKTransform*> children;//массив дочерних обьектов трансформа
     BKVector2d position, localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
     //void UpdateTransform();//wow wow, slowly plz
 public:
+    BKTransform *parent;//трансформ родителя
     void UpdateTransform();
     BKTransform();
     BKTransform(const BKTransform& transform);
@@ -83,7 +85,7 @@ public:
     //parent section
     /*Всегда пользуемся для создания дочерних обьектов только этими функциями.
     //Например, чтобы сделать B дочерним к A, пишем B.SetParent(A)*/
-    void SetParent(BKTransform parent);
+    void SetParent(BKTransform* parent);
     BKTransform *GetParent();
     void deleteParent();
     
