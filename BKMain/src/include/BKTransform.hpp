@@ -23,7 +23,7 @@ public:
     double x(double _x);
     BKVector2d();
     BKVector2d(double _x, double _y);
-    BKVector2d(const BKVector2d &vector);
+    //BKVector2d(const BKVector2d &vector);
     double GetLength();
     BKVector2d* Set(double _x, double _y);
     BKVector2d& operator += (BKVector2d rhs);
@@ -61,10 +61,11 @@ private:
     BKVector2d position, localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
-    void UpdateTransform();//wow wow, slowly plz
+    //void UpdateTransform();//wow wow, slowly plz
 public:
-    
+    void UpdateTransform();
     BKTransform();
+    BKTransform(const BKTransform& transform);
     BKTransform(BKVector2d pos, BKRotation rot);
     //basics
     BKVector2d& GetPosition();

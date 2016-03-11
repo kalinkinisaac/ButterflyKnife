@@ -34,11 +34,14 @@ BKVector2d::BKVector2d()
     x(0); y(0);
 }
 BKVector2d::BKVector2d(double _x, double _y) {
-	Set(_x, _y);
+	this->Set(_x, _y);
 }
+/*
 BKVector2d::BKVector2d(const BKVector2d &vector) {
-	*this = vector;
-}
+    BKVector2d VECTOR = vector;
+    this->Set(VECTOR.x(), VECTOR.y());
+    *this = vector;
+}*/
 
 BKVector2d* BKVector2d::Set(double _x, double _y) {
     x(_x);
@@ -76,7 +79,7 @@ BKVector2d& BKVector2d::operator *= (double rhs){
     return *this;
 }
 
-BKVector2d& BKVector2d::operator= (BKVector2d rhs) {
+BKVector2d& BKVector2d::operator = (BKVector2d rhs) {
     x(rhs.x());
     y(rhs.y());
     return *this;
@@ -125,8 +128,14 @@ BKRotation& BKRotation::operator+=(BKRotation& rhs)
 
 //==-Transform-============================
 BKTransform::BKTransform()  {	
-    this->childCount = 0;
 
+}
+BKTransform::BKTransform(const BKTransform& transform)
+{
+    /*
+    this->localPosition = transform.localPosition;
+    this->localRotation = transform.localRotation;*/
+    *this = transform;
 }
 BKTransform::BKTransform(BKVector2d position, BKRotation rotation)
 {
@@ -177,7 +186,7 @@ void BKTransform::Move(BKVector2d position_to)
 
 void BKTransform::UpdateTransform()
 {
-	if(parent == 0) {//а так можно?
+	if(parent == 0) {
 		this->position = this->localPosition;
 		this->rotation = this->localRotation;
 	}
