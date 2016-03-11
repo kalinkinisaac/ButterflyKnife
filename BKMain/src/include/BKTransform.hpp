@@ -57,14 +57,13 @@ public:
 class BKTransform{
 private:
     int id;
-    //BKTransform *parent;//трансформ родителя
+    BKTransform *parent;//трансформ родителя
     std::vector<BKTransform*> children;//массив дочерних обьектов трансформа
     BKVector2d position, localPosition;//позиции: глобальная и локальная(относительно родителя)
     BKVector2d forward; //направление "вперед" этого обьекта
     BKRotation rotation, localRotation;//ротация
     //void UpdateTransform();//wow wow, slowly plz
 public:
-    BKTransform *parent;//трансформ родителя
     void UpdateTransform();
     BKTransform();
     BKTransform(const BKTransform& transform);
