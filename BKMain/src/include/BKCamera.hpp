@@ -1,3 +1,7 @@
+#ifndef BKCamera_hpp
+#define BKCamera_hpp
+
+
 #include "BKObject.hpp"
 #include "BKTransform.hpp"
 
@@ -14,5 +18,5 @@ public:
 	BKCamera(BKVector2d NewArea);
 	BKCamera(BKTransform Transform, BKVector2d NewArea);
 };
-
+#endif
 

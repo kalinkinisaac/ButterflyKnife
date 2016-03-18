@@ -8,7 +8,13 @@
 
 #ifndef BKObject_hpp
 #define BKObject_hpp
+#include <SFML/Graphics.hpp>
 #include "BKTransform.hpp"
+//#include "BKRender.hpp"
+class Mesh{
+    sf::Texture texture;
+};
+
 class BKObject{
 private:
 public:
